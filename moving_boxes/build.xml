@@ -1,4 +1,4 @@
-<project name="game1" default="compile" basedir=".">
+<project name="moving_boxes" default="compile" basedir=".">
   <property name="src" location="src/" />
   <property name="build" location="build/" />
   <property name="lwjgl" location="../lib/lwjgl-2.9.3" />

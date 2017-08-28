@@ -32,19 +32,15 @@
     <delete dir="${build}" />
   </target>
 
-  <condition property="isMac">
+  <condition property="native" value="${lwjgl}/native/macosx">
     <os family="mac" />
   </condition>
 
+  <condition property="native" value="${lwjgl}/native/windows">
+    <os family="windows" />
+  </condition>
 
-  <target name="setvars" if="isMac">
-    <property name="native" location="${lwjgl}/native/macosx" />
-    <echo message="${native}" />
-  </target>
-
-
-
-  <target name="run" description="run the compiled code" depends="compile, setvars">
+  <target name="run" description="run the compiled code" depends="compile">
     <property name="native" location="${lwjgl}/native/linux" />
     <!-- <echo message="${native}" /> -->
 

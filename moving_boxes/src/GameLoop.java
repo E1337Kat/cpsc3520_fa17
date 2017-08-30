@@ -17,52 +17,16 @@ public class GameLoop
     {
         initGL(SCR_WIDTH, SCR_HEIGHT);
 
-
-        int x=10;
-        int y=10;
-        int w=10;
+        Entity e = new Entity();
 
 
         while (! Display.isCloseRequested())
         {
+            e.update();
+
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
-            // look for key presses
-
-            if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
-            {
-                x++;
-            }
-
-            if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
-            {
-                x--;
-            }
-
-            if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
-            {
-                y++;
-            }
-
-            if (Keyboard.isKeyDown(Keyboard.KEY_UP))
-            {
-                y--;
-            }
-
-
-
-            // draw the square
-            
-            GL11.glColor3f(0,1,0);
-            GL11.glBegin(GL11.GL_QUADS);
-
-            GL11.glVertex2f(x, y);
-            GL11.glVertex2f(x+w, y);
-            GL11.glVertex2f(x+w, y+w);
-            GL11.glVertex2f(x, y+w);
-
-            GL11.glEnd();
-
+            e.draw();
 
             // UPDATE DISPLAY
             Display.update();

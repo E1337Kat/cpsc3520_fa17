@@ -3,11 +3,17 @@ import org.lwjgl.opengl.GL11;
 
 class Entity
 {
-    private Rectangle box;
+    private static enum State  { START, LEFT, RIGHT };
 
-    public Entity()
+    private Rectangle box;
+    private State state;
+    private float speed;        // pixels / ms
+
+    public Entity(float speed)
     {
         box = new Rectangle(10, 10, 10, 10);
+        state = State.START;
+        this.speed = speed;
     }
 
     public void draw()
@@ -32,30 +38,35 @@ class Entity
 
     }
 
-    public void update()
+    public void update(int delta)
     {
-        // look for key presses
+        switch (state)
+        {
+         case START:
+             state = State.RIGHT;
 
-        // if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
-        // {
-        //     x++;
-        // }
+         case RIGHT:
 
-        // if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
-        // {
-        //     x--;
-        // }
+             box.translate((int)(speed*delta), 0);
 
-        // if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
-        // {
-        //     y++;
-        // }
+             if (box.getX() >= 100)
+             {
+                 state = State.LEFT;
+             }
 
-        // if (Keyboard.isKeyDown(Keyboard.KEY_UP))
-        // {
-        //     y--;
-        // }
+             break;
 
+         case LEFT:
+
+             box.translate((int)(-speed*delta), 0);
+
+             if (box.getX() <= 0)
+             {
+                 state = State.RIGHT;
+             }
+             
+             break;             
+        }
         
     }
 

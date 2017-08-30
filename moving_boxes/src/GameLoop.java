@@ -17,20 +17,29 @@ public class GameLoop
     {
         initGL(SCR_WIDTH, SCR_HEIGHT);
 
-        Entity e = new Entity();
+        Entity e = new Entity(.1f);
+        Entity e2 = new Entity(.2f);
 
-
+        long time = (Sys.getTime()*1000)/Sys.getTimerResolution(); // ms
         while (! Display.isCloseRequested())
         {
-            e.update();
+            long time2 = (Sys.getTime()*1000)/
+                Sys.getTimerResolution(); // ms
+            int delta = (int)(time2-time);
+            System.out.println(delta);
+
+            e.update(delta);
+            e2.update(delta);
 
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
             e.draw();
+            e2.draw();
 
             // UPDATE DISPLAY
             Display.update();
             Display.sync(TARGET_FPS);
+            time = time2;
         }
 
         Display.destroy();

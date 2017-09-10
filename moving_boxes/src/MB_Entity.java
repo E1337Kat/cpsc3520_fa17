@@ -61,29 +61,29 @@ class MB_Entity
         switch (state)
         {
         case START:
-            state = State.RIGHT;
+            state = State.LEFT;
         case RIGHT:
             box.translate((int)(speed*delta), 0);
-            if (box.getX() >= 100) {
-                state = State.DOWN;
+            if (box.getX() >= 790) {
+                state = State.UP;
             }
             break;
         case DOWN:
-            box.translate(0, (int)(-speed*delta));
-            if (box.getY() <= 0) {
-                state = State.LEFT;
+            box.translate(0, (int)(speed*delta));
+            if (box.getY() >= 590) {
+                state = State.RIGHT;
             }
             break;
         case LEFT:
             box.translate((int)(-speed*delta), 0);
             if (box.getX() <= 0) {
-                state = State.UP;
+                state = State.DOWN;
             }
             break;
         case UP:
-            box.translate(0, (int)(speed*delta));
-            if (box.getY() >= 100) {
-                state = State.RIGHT;
+            box.translate(0, (int)(-speed*delta));
+            if (box.getY() <= 0) {
+                state = State.LEFT;
             }
             break;
         }

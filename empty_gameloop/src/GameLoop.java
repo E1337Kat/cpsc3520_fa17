@@ -7,7 +7,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.LWJGLException;
 
 
-public class E_GameLoop
+public class GameLoop
 {
     public static final int TARGET_FPS=100;
     public static final int SCR_WIDTH=800;

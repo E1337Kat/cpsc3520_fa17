@@ -21,7 +21,7 @@ public class E_GameLoop
     {
         initGL(SCR_WIDTH, SCR_HEIGHT);
 
-        List<Entity> entities = new LinkedList<>();
+        List<E_Entity> entities = new LinkedList<>();
 
         entities.add (new E_MouseSprite(200));
         entities.add (new E_StupidBox(.1f));
@@ -36,7 +36,7 @@ public class E_GameLoop
             float delta = (float)(time2-time);
             // System.out.println(delta);
 
-            for  (Entity e : entities)
+            for  (E_Entity e : entities)
             {
                 e.update(delta);
             }
@@ -44,7 +44,7 @@ public class E_GameLoop
 
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
-            for  (Entity e : entities)
+            for  (E_Entity e : entities)
             {
                 e.draw();
             }

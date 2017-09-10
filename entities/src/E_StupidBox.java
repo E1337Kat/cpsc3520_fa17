@@ -1,7 +1,7 @@
 import java.awt.Rectangle;
 import org.lwjgl.opengl.GL11;
 
-class Entity
+class E_StupidBox extends E_Entity
 {
     private static enum State  { START, LEFT, RIGHT };
 
@@ -9,7 +9,7 @@ class Entity
     private State state;
     private float speed;        // pixels / ms
 
-    public Entity(float speed)
+    public E_StupidBox(float speed)
     {
         box = new Rectangle(10, 10, 10, 10);
         state = State.START;
@@ -38,7 +38,7 @@ class Entity
 
     }
 
-    public void update(int delta)
+    public void update(float delta)
     {
         switch (state)
         {

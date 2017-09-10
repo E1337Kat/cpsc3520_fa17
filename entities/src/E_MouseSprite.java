@@ -5,12 +5,12 @@ import org.newdawn.slick.util.ResourceLoader;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Rectangle;
 
-public class MouseSprite extends Entity
+public class E_MouseSprite extends E_Entity
 {
     private Rectangle box;
     private Texture sprite;
 
-    public MouseSprite(float width)
+    public E_MouseSprite(float width)
     {
 
         try
@@ -18,7 +18,7 @@ public class MouseSprite extends Entity
 
             sprite =
                 TextureLoader.getTexture("PNG",
-                                         ResourceLoader.getResourceAsStream("res/duck.png"));
+                                         ResourceLoader.getResourceAsStream("res/ctanis.png"));
         
 
             box =  new Rectangle(0,0,

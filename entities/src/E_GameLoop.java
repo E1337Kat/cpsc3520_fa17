@@ -11,7 +11,7 @@ import java.util.LinkedList;
 
 
 
-public class GameLoop
+public class E_GameLoop
 {
     public static final int TARGET_FPS=100;
     public static final int SCR_WIDTH=800;
@@ -23,9 +23,9 @@ public class GameLoop
 
         List<Entity> entities = new LinkedList<>();
 
-        entities.add (new MouseSprite(200));
-        entities.add (new StupidBox(.1f));
-        entities.add (new StupidBox(.2f));
+        entities.add (new E_MouseSprite(200));
+        entities.add (new E_StupidBox(.1f));
+        entities.add (new E_StupidBox(.2f));
 
 
         long time = (Sys.getTime()*1000)/Sys.getTimerResolution(); // ms

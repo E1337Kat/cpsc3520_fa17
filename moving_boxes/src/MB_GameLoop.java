@@ -7,7 +7,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.LWJGLException;
 
 
-public class GameLoop
+public class MB_GameLoop
 {
     public static final int TARGET_FPS=100;
     public static final int SCR_WIDTH=800;
@@ -17,8 +17,8 @@ public class GameLoop
     {
         initGL(SCR_WIDTH, SCR_HEIGHT);
 
-        Entity e = new Entity(.1f);
-        Entity e2 = new Entity(.2f);
+        MB_Entity e = new MB_Entity(.1f);
+        MB_Entity e2 = new MB_Entity(.2f);
 
         long time = (Sys.getTime()*1000)/Sys.getTimerResolution(); // ms
         while (! Display.isCloseRequested())

@@ -50,6 +50,7 @@ public class BulletSource extends Entity
     public void notify(int loc)
     {
         // update speed based on loc?
+        score.registerPoint();
     }
 
 

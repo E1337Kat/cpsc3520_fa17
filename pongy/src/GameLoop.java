@@ -34,7 +34,8 @@ public class GameLoop
         AudioManager audio = AudioManager.getInstance();
         audio.loadSample("bounce", "res/bounce.wav");
         audio.loadSample("fire", "res/shoot.wav");
-        audio.loadSample("score", "res/end.wav");
+        audio.loadSample("score", "res/ding.wav");
+        audio.loadSample("hit", "res/end.wav");
         audio.loadLoop("ambience", "res/loop.ogg"); // loops must be OGG files
 
 
@@ -109,6 +110,8 @@ public class GameLoop
                 }
             }
 
+            score.draw();
+
 
             // UPDATE DISPLAY
             Display.update();
@@ -139,7 +142,10 @@ public class GameLoop
         // enable alpha blending
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-         
+        GL11.glShadeModel(GL11.GL_SMOOTH);        
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11.glDisable(GL11.GL_LIGHTING);     
+
         // set viewport to entire window
         GL11.glViewport(0,0,width,height);
          

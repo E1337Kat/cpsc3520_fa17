@@ -1,5 +1,6 @@
 import java.awt.Rectangle;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.Display;
 
 class E_StupidBox extends E_Entity
 {
@@ -11,7 +12,7 @@ class E_StupidBox extends E_Entity
 
     public E_StupidBox(float speed)
     {
-        box = new Rectangle(10, 10, 10, 10);
+        box = new Rectangle(50, Display.getHeight()-50, 50, 50);
         state = State.START;
         this.speed = speed;
     }
@@ -50,7 +51,7 @@ class E_StupidBox extends E_Entity
 
              box.translate((int)(speed*delta), 0);
 
-             if (box.getX() >= 100)
+             if (box.getX() + box.getWidth() >= Display.getWidth())
              {
                  state = State.LEFT;
              }

@@ -4,11 +4,17 @@ import org.newdawn.slick.util.ResourceLoader;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Rectangle;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
 
 public class MouseSprite extends Entity
 {
+    enum State { JUMPING, FALLING, LEVEL };
+
     private Rectangle box;
     private Texture sprite;
+    private State state;
+    private int jumpTime;
 
     public MouseSprite(float width)
     {
@@ -25,6 +31,8 @@ public class MouseSprite extends Entity
                                  (int)width, 
                                  (int)(width * sprite.getImageHeight() / sprite.getImageWidth()));
 
+            state = State.FALLING;
+
         }
         catch (Exception e)
         {
@@ -34,6 +42,55 @@ public class MouseSprite extends Entity
 
 
     }
+
+    public void update(float delta)
+    {
+        if (state == State.FALLING)
+        {
+            box.translate(0, (int)(.5 * delta));
+
+
+            if (box.getY() + box.getHeight() > Display.getHeight())
+            {
+                box.setY(Display.getHeight() - box.getHeight());
+                state = State.LEVEL;
+            }
+        }
+
+        if (state == State.LEVEL)
+        {
+
+            if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
+            {
+                box.translate((int)(-.50*delta), 0);
+            
+            }
+
+            if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
+            {
+                box.translate((int)(.50*delta), 0);
+            }
+
+
+            if (Keyboard.isKeyDown(Keyboard.KEY_SPACE))
+            {
+                jumpTime=10;
+                state = State.JUMPING;
+            }
+        }
+
+        if (state == State.JUMPING)
+        {
+            if (jumpTime <= 0)
+            {
+                state = State.FALLING;
+            }
+            
+            jumpTime--;
+            box.translate(0, (int)(-.5 * delta));
+        }
+    }
+
 
     public void draw()
     {

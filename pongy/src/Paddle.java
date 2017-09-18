@@ -22,7 +22,7 @@ public class Paddle extends Entity
     }
 
 
-
+    // track the mouse
     public void update(float delta)
     {
         // mouse location
@@ -64,6 +64,8 @@ public class Paddle extends Entity
         
     }
 
+
+    // override Entity method since we can answer this question
     public boolean intersects(Rectangle other)
     {
         return box.intersects(other);

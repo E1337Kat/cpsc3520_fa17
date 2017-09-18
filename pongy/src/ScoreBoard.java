@@ -9,6 +9,10 @@ public class ScoreBoard extends Entity {
         AudioManager.getInstance().play("score");
     }
 
+    public void draw()
+    {
+        // eventually we can put the score info on the screen somewhere
+    }
     
 
 }

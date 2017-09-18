@@ -1,27 +1,31 @@
 import org.lwjgl.util.Rectangle;
 import org.lwjgl.opengl.GL11;
 
+/** This class represents a single bullet moving across the screen and
+ * potentially bouncng off the user's paddle */
 public class Bullet extends Entity {
 
-    private int y;
-    private float speed;
-    private Paddle user;
-    private ScoreBoard score;
-    private int distance;
-    private Rectangle box;
-    private boolean deleteMe=false;
-    private boolean goRight=true;
-    private BulletSource daddy;
-    private int hitLoc;
+    private int y;              // vertical position
+    private float speed;        // pixels per ms
+    private Paddle user;        // paddle for intersection tests
+    private ScoreBoard score;   // game state
+    private int distance;       // screen width
 
-    private static int WIDTH=10;
+    private Rectangle box;
+
+    private boolean deleteMe=false; // this entity should be removed
+    private boolean goRight=true;   // state machine
+    private BulletSource daddy;     // to notify the launcher about changes to the bullet
+    private int hitLoc;             // x position when paddle intersects
+
+    private static int WIDTH=10; // bullet dimension
     private static int HEIGHT=10;
 
     public Bullet(int y, float speed, Paddle user, ScoreBoard score, int distance, BulletSource daddy)
     {
-        this.y = y;
-        this.speed = speed;
-        this.user = user;
+        this.y = y;             // vertical position
+        this.speed = speed;     // pixels per ms
+        this.user = user;       // paddle
         this.score = score;
         this.distance = distance;
         this.daddy = daddy;
@@ -32,8 +36,11 @@ public class Bullet extends Entity {
 
     public void update(float delta)
     {
+        
+        // state machine 
         if (goRight)
         {
+            // translate right, check for intersection with paddle or screen boundary
 
             box.translate((int)(delta*speed), 0);
 
@@ -47,22 +54,22 @@ public class Bullet extends Entity {
             {
                 AudioManager.getInstance().play("bounce");
                 hitLoc = box.getX();
+                speed *= 2;
                 goRight=false;
             }
         }
         else
         {
+            // translate left, check for screen boundary
             box.translate((int)(delta*speed*-1), 0);
 
             if (box.getX() < 0)
             {
+                // tell launcher about bounce when we return to the far left
                 daddy.notify(hitLoc);
                 deleteMe=true;
             }
         }
-        
-
-        
         
     }
 

@@ -18,24 +18,29 @@ public class GameLoop
     public static final int TARGET_FPS=100;
     public static final int SCR_WIDTH=800;
     public static final int SCR_HEIGHT=600;
+
+    // number of bullet rows on screen
     public static final int NUM_BULLETS=10;
 
     public static void main(String[] args) throws LWJGLException, java.io.IOException
     {
         initGL(SCR_WIDTH, SCR_HEIGHT);
 
+        // hide the mouse cursor
         Mouse.setGrabbed(true);
-        AudioManager audio = AudioManager.getInstance();
 
+
+        // load audio resources
+        AudioManager audio = AudioManager.getInstance();
         audio.loadSample("bounce", "res/bounce.wav");
         audio.loadSample("fire", "res/shoot.wav");
         audio.loadSample("score", "res/end.wav");
-        audio.loadLoop("ambience", "res/loop.ogg");
+        audio.loadLoop("ambience", "res/loop.ogg"); // loops must be OGG files
 
 
+        // set up entities
         List<BulletSource> sources = new LinkedList<>();
         List<Bullet> bullets = new LinkedList<>();
-        
         Paddle player = new Paddle();
         ScoreBoard score = new ScoreBoard();
 
@@ -43,10 +48,18 @@ public class GameLoop
         {
             sources.add(new BulletSource(Display.getHeight()/NUM_BULLETS*i+20,
                                          bullets,
-                                         5000, i * 300+2000, player, score, Display.getWidth()
+                                         5000, // time between shots
+                                         i * 300+2000, // starting time offset
+                                         player, // paddle object for intersection tests
+                                         score, // game state handler
+                                         Display.getWidth()
                             ));
         }
-        
+
+        // NOTE: BulletSource objects add to the bullets list
+
+
+        // start background sound loop        
         audio.play("ambience");
 
 
@@ -56,9 +69,11 @@ public class GameLoop
             long time2 = (Sys.getTime()*1000)/
                 Sys.getTimerResolution(); // ms
             float delta = (float)(time2-time);
-            // System.out.println(delta);
 
+
+            // update the paddle
             player.update(delta);
+
 
             for  (BulletSource bs : sources)
             {
@@ -73,12 +88,15 @@ public class GameLoop
 
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
+
             player.draw();
+
             for (Bullet b : bullets)
             {
                 b.draw();
             }
 
+            // check for Bullets that are flaggerd for deletion
             for (Iterator<Bullet> bi = bullets.iterator();
                  bi.hasNext(); )
             {
@@ -86,7 +104,7 @@ public class GameLoop
 
                 if (b.done())
                 {
-                    System.out.println("deleting bullet");
+                    // System.out.println("deleting bullet");
                     bi.remove();
                 }
             }

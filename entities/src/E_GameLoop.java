@@ -23,6 +23,7 @@ public class E_GameLoop
 
         List<E_Entity> entities = new LinkedList<>();
 
+        entities.add (new E_Background(800));
         entities.add (new E_MouseSprite(200));
         entities.add (new E_StupidBox(.1f));
         entities.add (new E_StupidBox(.2f));

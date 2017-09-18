@@ -1,14 +1,23 @@
-import java.util.HashSet;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+
+/**
+ *
+ * @author ellie
+ */
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.util.Rectangle;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.Rectangle;
-
-public class E_MouseSprite extends E_Entity {
+public class E_Background extends E_Entity {
     
     protected static enum State  { LEVEL, JUMPING, FALLING };
     private static enum Direction { LEFT, RIGHT };
@@ -21,12 +30,12 @@ public class E_MouseSprite extends E_Entity {
     private int jumpTime;
     private boolean moving;
 
-    public E_MouseSprite(float width) {
+    public E_Background(float width) {
 
         try {
             sprite =
                 TextureLoader.getTexture("PNG",
-                                         ResourceLoader.getResourceAsStream("res/duck.png"));
+                                         ResourceLoader.getResourceAsStream("res/back.png"));
             box =  new Rectangle(   
                                     (Display.getWidth()/2),
                                     (Display.getHeight()/2),
@@ -201,3 +210,4 @@ public class E_MouseSprite extends E_Entity {
 
 
 }
+

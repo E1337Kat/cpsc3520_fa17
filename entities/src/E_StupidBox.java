@@ -38,6 +38,7 @@ class E_StupidBox extends E_Entity
 
     }
 
+    @Override
     public void update(float delta)
     {
         switch (state)
@@ -57,14 +58,11 @@ class E_StupidBox extends E_Entity
              break;
 
          case LEFT:
-
              box.translate((int)(-speed*delta), 0);
-
              if (box.getX() <= 0)
              {
                  state = State.RIGHT;
              }
-             
              break;             
         }
         

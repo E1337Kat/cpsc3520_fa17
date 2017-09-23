@@ -16,45 +16,107 @@ public class E_GameLoop
     public static final int TARGET_FPS=100;
     public static final int SCR_WIDTH=800;
     public static final int SCR_HEIGHT=600;
+    
+    private static E_Background background;
+    private static E_Player player;
 
     public static void main(String[] args) throws LWJGLException
     {
         initGL(SCR_WIDTH, SCR_HEIGHT);
 
-        List<E_Entity> entities = new LinkedList<>();
+        // Load Background
+        List<E_Background> tiles = new LinkedList<>();
+        for (int i = 0; i < 10; i++) {
+            tiles.add(new E_Background(i));
+        }
+        
+        // Load Ground tiles
+        List<E_Entity> ground = new LinkedList<>();
+        for (int i = 0; i < 10; i++ ) {
+            ground.add (new E_Ground(i, player));
+        }
+        
+        // Load Player
+        player = new E_Player(100);
 
-        entities.add (new E_Background(800));
-        entities.add (new E_MouseSprite(200));
-        entities.add (new E_StupidBox(.1f));
-        entities.add (new E_StupidBox(.2f));
 
-
+        int x1 = player.getX();
+        int y1 = player.getY();
+        
         long time = (Sys.getTime()*1000)/Sys.getTimerResolution(); // ms
         while (! Display.isCloseRequested())
         {
+            int x2 = player.getX();
+            int y2 = player.getY();
             long time2 = (Sys.getTime()*1000)/
                 Sys.getTimerResolution(); // ms
             float delta = (float)(time2-time);
             // System.out.println(delta);
 
-            for  (E_Entity e : entities)
-            {
+            // Update the background tiles
+            for (E_Background b : tiles) {
+                b.update(delta);
+            }
+            
+            // Update the Player
+            player.update(delta);
+            
+            if ( x2 != x1 ) {
+                System.out.println("Player x: " + player.getX());
+
+            }
+            if ( y2 != y1 ) {
+                System.out.println("Player y: " + player.getY());
+            }
+            
+            // Update the other entities
+            for  (E_Entity e : ground) {
                 e.update(delta);
             }
 
 
+            Display.update();
+            int translate_y = player.getY() - Display.getHeight() / 2;
+            int translate_x = player.getX() + Display.getWidth() / 2;
+            Display.sync(TARGET_FPS);
+            
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
-            for  (E_Entity e : entities)
-            {
+            // 50% Parallax scrolling
+            // Pushes current matrix used for screen operations, then
+            // translates it by half. 
+            GL11.glPushMatrix();
+            GL11.glTranslatef(translate_x / 2, -translate_y / 2, 0);
+            
+            // Draw the background
+            for (E_Background b : tiles) {
+                b.draw();
+            }
+            GL11.glPopMatrix();
+            // END 50% Parallax
+            
+            // Can add additional stuff between matrix stuff as needed.
+            
+            // 100% Parallax scrolling
+            // 
+            GL11.glPushMatrix();
+            GL11.glTranslatef(translate_x, -translate_y, 0);
+            
+            // Draw the Player
+            player.draw();
+            
+            // Draw the other entities
+            for  (E_Entity e : ground) {
                 e.draw();
             }
+            GL11.glPopMatrix();
+            // END 100% Parallax
 
 
-            // UPDATE DISPLAY
-            Display.update();
-            Display.sync(TARGET_FPS);
+            // Update delta
             time = time2;
+            x1 = x2;
+            y1 = y2;
         }
 
         Display.destroy();

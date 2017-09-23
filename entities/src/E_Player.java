@@ -8,12 +8,12 @@ import org.newdawn.slick.util.ResourceLoader;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Rectangle;
 
-public class E_MouseSprite extends E_Entity {
+public class E_Player extends E_Entity {
     
     protected static enum State  { LEVEL, JUMPING, FALLING };
     private static enum Direction { LEFT, RIGHT };
     
-    private int maxJumpHeight;
+   
     private Rectangle box;
     private Texture sprite;
     private State state = State.FALLING;
@@ -21,15 +21,15 @@ public class E_MouseSprite extends E_Entity {
     private int jumpTime;
     private boolean moving;
 
-    public E_MouseSprite(float width) {
+    public E_Player(float width) {
 
         try {
             sprite =
                 TextureLoader.getTexture("PNG",
                                          ResourceLoader.getResourceAsStream("res/duck.png"));
             box =  new Rectangle(   
-                                    (Display.getWidth()/2),
-                                    (Display.getHeight()/2),
+                                    0,
+                                    Display.getHeight(),
                                     (int)width, 
                                     (int)(width * sprite.getImageHeight() / sprite.getImageWidth())
                                 );
@@ -40,7 +40,6 @@ public class E_MouseSprite extends E_Entity {
             throw new RuntimeException(e);
         }
         
-        maxJumpHeight = sprite.getTextureHeight() / 2;
     }
 
     public void draw() {
@@ -96,25 +95,25 @@ public class E_MouseSprite extends E_Entity {
         if (state == State.LEVEL) {
             if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
                 dir = Direction.LEFT;
-                box.translate((int)(-.50*delta), 0);
-                if (box.getX() < 0) {
-                        box.setX(0);
-                    }
+                //box.translate((int)(-.50*delta), 0);
+                //if (box.getX() < 0) {
+                //        box.setX(0);
+                //    }
             }
             
             if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
                 dir = Direction.RIGHT;
-                box.translate((int)(.50*delta), 0);
-                if (box.getX() + box.getWidth() > Display.getWidth()) {
-                        box.setX(Display.getWidth() - box.getWidth());
-                    }
+                //box.translate((int)(.50*delta), 0);
+                //if (box.getX() + box.getWidth() > Display.getWidth()) {
+                //        box.setX(Display.getWidth() - box.getWidth());
+                //    }
             }
             
             if (Keyboard.isKeyDown(Keyboard.KEY_SPACE) && 
                     (!Keyboard.isKeyDown(Keyboard.KEY_RIGHT) || 
                         !Keyboard.isKeyDown(Keyboard.KEY_LEFT))) {
                 moving = false;
-                jumpTime = 10;
+                jumpTime = 20;
                 state = State.JUMPING;
             }
             
@@ -122,7 +121,7 @@ public class E_MouseSprite extends E_Entity {
                     (Keyboard.isKeyDown(Keyboard.KEY_RIGHT) || 
                         Keyboard.isKeyDown(Keyboard.KEY_LEFT))) {
                 moving = true;
-                jumpTime = 10;
+                jumpTime = 20;
                 state = State.JUMPING;
             }
             
@@ -136,7 +135,7 @@ public class E_MouseSprite extends E_Entity {
             if (moving) {
                 if (dir == Direction.LEFT) {
                     for (double i=0; i < 0.50; i=i+0.1) {
-                        box.translate((int)(-(i)*delta), (int)(-i*delta));
+                        box.translate(/*(int)(-(i)*delta)*/0, (int)(-i*delta));
                         //if (box.getY() + box.getHeight() > this.maxJumpHeight) {
                         //    box.setY(this.maxJumpHeight);
                         //    state = State.FALLING;
@@ -149,7 +148,7 @@ public class E_MouseSprite extends E_Entity {
                 }
                 if (dir == Direction.RIGHT) {
                     for (double i=0; i < .50; i=i+0.1) {
-                        box.translate((int)((i)*delta), (int)(-i*delta));
+                        box.translate(/*(int)((i)*delt(a)*/0, (int)(-i*delta));
                         //if (box.getY() + box.getHeight() > this.maxJumpHeight) {
                         //    box.setY(this.maxJumpHeight);
                         //    state = State.FALLING;
@@ -171,7 +170,7 @@ public class E_MouseSprite extends E_Entity {
             if (moving) {
                 if (dir == Direction.LEFT) {
                     for (double i=0; i < 0.50; i=i+0.1) {
-                        box.translate((int)(-i*delta), (int)(i*delta));
+                        box.translate(/*(int)(-i*delta)*/0, (int)(i*delta));
                         i=i+.01;
                         if (box.getX() < 0) {
                             box.setX(0);
@@ -181,7 +180,7 @@ public class E_MouseSprite extends E_Entity {
                 }
                 if (dir == Direction.RIGHT) {
                     for (double i=0; i < .50; i=i+0.1) {
-                        box.translate((int)(i*delta), (int)(i*delta));
+                        box.translate(/*(int)(i*delta)*/0, (int)(i*delta));
                         i=i+.01;
                         if (box.getX() + box.getWidth() > Display.getWidth()) {
                             box.setX(Display.getWidth() - box.getWidth());
@@ -192,12 +191,31 @@ public class E_MouseSprite extends E_Entity {
             } else {
                 box.translate(0, (int)(.50*delta));
             }
+            
             if (box.getY() + box.getHeight() > Display.getHeight()) {
-                box.setY(Display.getHeight() - box.getHeight());
+                box.setY(Display.getHeight());
+                System.out.println("Display height after falling: " + Display.getHeight());
+                //System.out.println("box height after falling: " + Display.getHeight());
                 state = State.LEVEL;
             }
         }
+        
+    }
+    
+    // override Entity method since we can answer this question
+    public boolean intersects(Rectangle other)
+    {
+        return box.intersects(other);
     }
 
+    //@Override
+    public int getX () {
+        return box.getX();
+    }
+    
+    //@Override
+    public int getY () {
+        return box.getY();
+    }
 
 }

@@ -1,17 +1,36 @@
-import java.awt.Rectangle;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.Rectangle;
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
+import org.newdawn.slick.util.ResourceLoader;
 
-class E_StupidBox extends E_Entity
-{
+class E_Baddies extends E_Entity {
     private static enum State  { START, LEFT, RIGHT };
 
     private Rectangle box;
     private State state;
     private float speed;        // pixels / ms
+    private Texture sprite;
 
-    public E_StupidBox(float speed)
+    public E_Baddies(float width)
     {
+        try {
+            sprite =
+                TextureLoader.getTexture("PNG",
+                                         ResourceLoader.getResourceAsStream("res/duck.png"));
+            box =  new Rectangle(   
+                                    0,
+                                    0,
+                                    (int)width, 
+                                    (int)(width * sprite.getImageHeight() / sprite.getImageWidth())
+                                );
+            
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
         box = new Rectangle(50, Display.getHeight()-50, 50, 50);
         state = State.START;
         this.speed = speed;
@@ -67,6 +86,11 @@ class E_StupidBox extends E_Entity
              break;             
         }
         
+    }
+    
+    @Override 
+    public boolean intersects(Rectangle other) {
+        return true;
     }
 
 
